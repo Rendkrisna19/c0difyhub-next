@@ -272,7 +272,7 @@ const JokiForm = () => {
                   </div>
 
                   {!canSubmit && (
-                    <p className="text-[13px] text-rose-600 mt-2 text-right">Lengkapi detail (min. 10 karakter) & pilih tanggal.</p>
+                    <p className="text-[11px] text-rose-600 mt-2 text-right">Lengkapi detail (min. 10 karakter) & pilih tanggal.</p>
                   )}
                 </motion.div>
               )}
