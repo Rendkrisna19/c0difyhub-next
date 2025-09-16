@@ -7,18 +7,25 @@ import { Edit3, Calendar, Send, ArrowRight, Check } from 'lucide-react';
 // ===== Types =====
 interface FormData {
   details: string;
-  deadlineDate: string; // ISO date string 'YYYY-MM-DD'
+  deadlineDate: string; // ISO 'YYYY-MM-DD'
   isDeadlineFlexible: boolean;
 }
 
+// Tipe ikon untuk Lucide (React SVG component)
+type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
+
 // ===== Helpers =====
-const WA_NUMBER = '6282275373233'; // 082275373233 -> add country code 62 & drop leading 0
+const WA_NUMBER = '6282275373233'; // 082275373233 -> +62 tanpa 0 depan
 
 const toIndoDate = (iso: string) => {
   if (!iso) return '';
   try {
     const d = new Date(iso + 'T00:00:00');
-    const fmt = new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+    const fmt = new Intl.DateTimeFormat('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
     return fmt.format(d);
   } catch {
     return iso;
@@ -43,7 +50,7 @@ const buildWaMessage = (data: FormData) => {
 };
 
 const JokiForm = () => {
-  // Default from your screenshot: 23 September 2025 -> ISO: 2025-09-23
+  // Default: 23 September 2025 -> 2025-09-23
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     details: '',
@@ -54,11 +61,12 @@ const JokiForm = () => {
   const [canSubmit, setCanSubmit] = useState(false);
 
   useEffect(() => {
-    setCanSubmit((formData.details?.trim().length || 0) >= 10 && !!formData.deadlineDate);
-  }, [formData]);
+    setCanSubmit((formData.details.trim().length >= 10) && !!formData.deadlineDate);
+  }, [formData.details, formData.deadlineDate]);
 
-  const handleInputChange = (field: keyof FormData, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value as any }));
+  // tanpa any/never
+  const handleInputChange = <K extends keyof FormData>(field: K, value: FormData[K]) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const nextStep = () => setStep((prev) => (prev < 3 ? prev + 1 : prev));
@@ -78,23 +86,23 @@ const JokiForm = () => {
       if (step < 3) {
         e.preventDefault();
         nextStep();
-      } else if (step === 3) {
+      } else {
         e.preventDefault();
         submitToWhatsApp();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [step, formData, canSubmit]);
+  }, [step, canSubmit, formData]); // deps aman
 
   // Animations
   const slideVariants = {
     hidden: { x: '100%', opacity: 0 },
     visible: { x: 0, opacity: 1 },
     exit: { x: '-100%', opacity: 0 },
-  };
+  } as const;
 
-  const StepperIcon = ({ stepNumber, Icon }: { stepNumber: number; Icon: any }) => (
+  const StepperIcon = ({ stepNumber, Icon }: { stepNumber: number; Icon: IconType }) => (
     <div className="flex flex-col items-center gap-2">
       <button
         type="button"
@@ -274,7 +282,9 @@ const JokiForm = () => {
       </div>
 
       {/* Subtle footer */}
-      <div className="mt-6 text-center text-xs text-slate-500">Tekan <kbd className="text-[10px] border rounded px-1">Enter</kbd> untuk navigasi cepat • Tema biru & putih</div>
+      <div className="mt-6 text-center text-xs text-slate-500">
+        Tekan <kbd className="text-[10px] border rounded px-1">Enter</kbd> untuk navigasi cepat • Tema biru & putih
+      </div>
     </div>
   );
 };
