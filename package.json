@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint"
   },
+  
   "dependencies": {
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
@@ -28,4 +29,5 @@
     "tailwindcss": "^4.1.13",
     "typescript": "^5"
   }
+  
 }

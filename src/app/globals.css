@@ -78,3 +78,13 @@ body {
 
 .will-change-filter { will-change: filter; }
 .will-change-transform { will-change: transform; }
+.glass-dark {
+  background: linear-gradient(to bottom right, rgba(17,24,39,.75), rgba(17,24,39,.55)); /* slate-900 */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(147,197,253,.14); /* blue-300/14 */
+  box-shadow: 0 10px 30px rgba(2,132,199,.10);
+}
+
+/* horizontal snap untuk mobile */
+.snap-x-mandatory { scroll-snap-type: x mandatory; }
+.snap-center { scroll-snap-align: center; }

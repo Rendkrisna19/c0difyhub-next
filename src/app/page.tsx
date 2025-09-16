@@ -6,6 +6,10 @@ import JokiForm from '@/components/JokiForm';
 import ReadyProjectsSection from '@/components/ReadyProjectsSection';
 import { ScrollProvider, useScrollInfo } from '@/context/ScrollContext';
 import BlurOnScrollSection from '@/components/BlurOnScrollSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
+import FAQSection from '@/components/FAQSection';
+import Footer from '@/components/Footer'; 
+
 function PageInner() {
   const { isScrolled } = useScrollInfo(); // pakai di Navbar & Hero
 
@@ -38,11 +42,14 @@ function PageInner() {
       </BlurOnScrollSection>
 
       {/* Section demo lain */}
+      <BlurOnScrollSection as="section" className="">
+       <TestimonialsSection />
+      </BlurOnScrollSection>
       <BlurOnScrollSection as="section" className="container mx-auto py-20 text-center">
-        <h2 className="text-4xl font-bold">Bagian Selanjutnya</h2>
-        <p className="mt-4 text-[var(--muted-foreground)]">
-          Konten website Anda akan muncul di sini.
-        </p>
+       <FAQSection theme="light" />
+      </BlurOnScrollSection>
+      <BlurOnScrollSection as="section" className="container mx-auto py-20 text-center">
+       <Footer />
       </BlurOnScrollSection>
     </main>
   );
